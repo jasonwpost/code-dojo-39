@@ -10,15 +10,21 @@ public class Verse {
 	private String line;
 	private String rhyme;
 	
-	public Verse(String animal, List<String> animals){
+	private static Map<String, String> rhymes;
+	
+	public Verse(String animal, boolean isFirstLine){
 		
 		this.animal = animal;
-		this.isFirstLine = animals.indexOf(animal) == 0 ? true : false;
+		this.isFirstLine = isFirstLine;
+		if (!hasRhyme(animal)){
+			throw new RuntimeException();
+		}
 		createRhyme();
 		createVerse();
+		
 	}
 	
-	public void createRhyme(){
+	private void createRhyme(){
 		if (isFirstLine){
 			rhyme = "I don't know why she swallowed a " + animal + " - perhaps she'll die!\n\n";
 		} else {
@@ -40,7 +46,7 @@ public class Verse {
 	}
 	
 	private static String getRhyme(String animal){
-		Map<String, String> rhymes = new HashMap<>();
+		rhymes = new HashMap<>();
 		rhymes.put("er", "That wriggled and wiggled and tickled inside her.");
 		rhymes.put("rd", "How absurd to swallow a ");
 		rhymes.put("at", "Fancy that to swallow a ");
@@ -51,13 +57,24 @@ public class Verse {
 		String lastTwoCharsOfAnimal = animal.substring(Math.max(animal.length() - 2, 0));
 		
 		String rhyme = rhymes.get(lastTwoCharsOfAnimal);
-		if (rhyme == null){
-			throw new NullPointerException();
-		}
+
 		if (rhyme.substring(rhyme.length() - 1).equals(" ")){
 			rhyme += animal + ".";
 		}
 		return rhyme;
+	}
+	
+	private static boolean hasRhyme(String animal){
+		String lastTwoCharsOfAnimal = animal.substring(Math.max(animal.length() - 2, 0));
+		if (rhymes.containsKey(lastTwoCharsOfAnimal)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private static void addToRhymes(String key, String rhyme){
+		rhymes.put(key, rhyme);
 	}
 	
 }

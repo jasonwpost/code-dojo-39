@@ -12,8 +12,12 @@ class Song {
     	List<Verse> verses = new ArrayList<>();
     	List<String> bridges = new ArrayList<>();
     	
-    	for (String animal : animals){
-    		verses.add(new Verse(animal, animals));
+    	for (int animal = 0; animal < animals.size(); animal++){
+    		if (animal == 0){
+    			verses.add(new Verse(animals.get(animal), true));
+    		} else {
+    			verses.add(new Verse(animals.get(animal), false));
+    		}
     	}
     	
     	for(int caughtAnimal = 0, catchingAnimal = 1; catchingAnimal < animals.size()-1; caughtAnimal++, catchingAnimal++){
@@ -24,7 +28,6 @@ class Song {
     			}
     		}
     		bridges.add(bridge);
-    		
     	}
     	    	
     	for (int verse = 0; verse < verses.size(); verse++){
