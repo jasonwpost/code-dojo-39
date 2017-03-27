@@ -10,33 +10,35 @@ class Song {
     	
     	List<String> animals = new ArrayList<String>(Arrays.asList("fly", "spider", "bird", "cat", "dog", "cow", "horse"));
     	List<Verse> verses = new ArrayList<>();
-    	List<String> bridges = new ArrayList<>();
+    	int lastAnimal = animals.size() - 1;
     	
     	for (int animal = 0; animal < animals.size(); animal++){
     		if (animal == 0){
-    			verses.add(new Verse(animals.get(animal), true));
-    		} else {
-    			verses.add(new Verse(animals.get(animal), false));
+    			verses.add(new Verse(animals.get(animal), true, false));
+    		} else if (animal == lastAnimal){
+    			verses.add(new Verse(animals.get(animal), false, true));
+    		}else {
+    			verses.add(new Verse(animals.get(animal), false, false));
     		}
     	}
     	
-    	for(int caughtAnimal = 0, catchingAnimal = 1; catchingAnimal < animals.size()-1; caughtAnimal++, catchingAnimal++){
-    		String bridge = "She swallowed the " + animals.get(catchingAnimal) + " to catch the " + animals.get(caughtAnimal) + ".\n";
-    		if (caughtAnimal > 0){
-    			for (int prevCaughtAnimal = caughtAnimal - 1, prevCatchingAnimal = catchingAnimal -1; prevCaughtAnimal >= 0; prevCaughtAnimal--, prevCatchingAnimal--){
-    				bridge += "She swallowed the " + animals.get(prevCatchingAnimal) + " to catch the " + animals.get(prevCaughtAnimal) + ".\n";
-    			}
+    	
+    	String bridge = "";
+    	for(int verse = 0; verse < verses.size(); verse++){
+    		if(verses.get(verse).isFirstLine()){
+    			bridge += verses.get(verse).getRhyme();
+    		} else if (verses.get(verse).isLastLine()){
+    			continue;
+    		} else {
+    			bridge = "She swallowed the " + animals.get(verse) + " to catch the " + animals.get(verse - 1) + ".\n" + bridge;
+    			verses.get(verse).setBridge(bridge);
     		}
-    		bridges.add(bridge);
     	}
-    	    	
-    	for (int verse = 0; verse < verses.size(); verse++){
-    		Verse thisVerse = verses.get(verse);
-    		System.out.println(thisVerse.getVerse());
-    		if(verse > 0 && verse < verses.size() - 1){
-    			int bridge = verse - 1;
-    			System.out.print(bridges.get(bridge));
-    			System.out.print(verses.get(0).getRhyme());
+    	
+    	for (Verse verse: verses){
+    		System.out.print(verse.getVerse());
+    		if (verse.hasBridge()){
+    			System.out.print(verse.getBridge());
     		}
     	}
     }

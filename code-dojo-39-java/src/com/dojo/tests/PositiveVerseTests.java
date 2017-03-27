@@ -12,7 +12,7 @@ public class PositiveVerseTests {
 	public static void setUpBeforeClass() throws Exception {
 		animal = "Tiger";
 		
-		verse = new Verse(animal, true);
+		verse = new Verse(animal, true, false);
 	}
 
 	@Test

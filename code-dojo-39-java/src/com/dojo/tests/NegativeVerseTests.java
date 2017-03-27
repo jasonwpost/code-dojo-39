@@ -13,10 +13,12 @@ public class NegativeVerseTests {
 	public void setUpBeforeClass() throws Exception {
 		try {
 			animal = "Sheep";
-			verse = new Verse(animal, false);
+			verse = new Verse(animal, false, false);
 			fail("Should throw exception");
 		} catch (Exception e) {
 			assertTrue(true);
 		}
 	}
+	
+	
 }
